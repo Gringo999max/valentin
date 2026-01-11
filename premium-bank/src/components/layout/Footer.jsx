@@ -135,7 +135,7 @@ export default function Footer() {
             </div>
           </div>
           <p className="text-gray-600 text-[10px] mt-4 leading-relaxed max-w-4xl">
-            {company.legal.disclaimer}
+            {t(company.legal.disclaimer)}
           </p>
         </div>
       </div>
