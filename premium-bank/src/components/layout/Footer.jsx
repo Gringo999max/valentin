@@ -1,8 +1,21 @@
 import { Link } from 'react-router-dom';
 import { Linkedin, Twitter, Mail, Phone, MapPin } from 'lucide-react';
-import { company, navigation } from '../../data/company';
+import { useLanguage } from '../../context/LanguageContext';
+import { translations } from '../../i18n/translations';
+import { company } from '../../data/company';
+
+const navigation = [
+  { name: translations.nav.about, href: '/about' },
+  { name: translations.nav.services, href: '/services' },
+  { name: translations.nav.trackRecord, href: '/track-record' },
+  { name: translations.nav.team, href: '/team' },
+  { name: translations.nav.insights, href: '/insights' },
+  { name: translations.nav.contact, href: '/contact' },
+];
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="bg-navy text-white">
       {/* Main Footer */}
@@ -12,15 +25,14 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
               <span className="font-serif text-2xl font-semibold text-white tracking-wide">
-                {company.name}
+                Udacha Capital
               </span>
               <span className="block text-xs text-gold tracking-[0.2em] uppercase mt-1">
-                Investment Banking
+                {t(translations.footer.investmentBanking)}
               </span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-md mb-6">
-              Independent advisory services for companies, shareholders, and investors
-              seeking trusted guidance on their most important financial decisions.
+              {t(translations.footer.description)}
             </p>
             <div className="flex space-x-4">
               <a
@@ -47,16 +59,16 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-wider text-gold mb-6">
-              Quick Links
+              {t(translations.footer.quickLinks)}
             </h4>
             <ul className="space-y-3">
               {navigation.map((item) => (
-                <li key={item.name}>
+                <li key={item.href}>
                   <Link
                     to={item.href}
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm"
                   >
-                    {item.name}
+                    {t(item.name)}
                   </Link>
                 </li>
               ))}
@@ -66,7 +78,7 @@ export default function Footer() {
           {/* Contact Info */}
           <div>
             <h4 className="text-sm font-semibold uppercase tracking-wider text-gold mb-6">
-              Contact
+              {t(translations.footer.contact)}
             </h4>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
@@ -112,13 +124,13 @@ export default function Footer() {
                 to="/privacy"
                 className="text-gray-500 hover:text-white text-xs transition-colors duration-200"
               >
-                Privacy Policy
+                {t(translations.footer.privacyPolicy)}
               </Link>
               <Link
                 to="/terms"
                 className="text-gray-500 hover:text-white text-xs transition-colors duration-200"
               >
-                Terms of Use
+                {t(translations.footer.termsOfUse)}
               </Link>
             </div>
           </div>

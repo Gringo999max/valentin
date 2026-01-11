@@ -1,27 +1,32 @@
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Scale, Users, Globe } from 'lucide-react';
 import { Hero, ServiceCard, FeaturedTransaction } from '../components/sections';
 import { Container, SectionTitle, StatCard, Button } from '../components/ui';
+import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
+import { translations } from '../i18n/translations';
 import { company } from '../data/company';
 import { servicesOverview, whyChooseUs } from '../data/services';
 import { featuredTransaction } from '../data/transactions';
 
 export default function Home() {
+  const { t } = useLanguage();
+  const { isDark } = useTheme();
+
   return (
     <>
       {/* Hero Section */}
       <Hero
-        title={company.name}
-        subtitle={company.tagline}
-        primaryCTA={{ label: 'Our Services', href: '/services' }}
-        secondaryCTA={{ label: 'Contact Us', href: '/contact' }}
+        title="Udacha Capital"
+        subtitle={t(translations.home.tagline)}
+        primaryCTA={{ label: t(translations.home.ourServices), href: '/services' }}
+        secondaryCTA={{ label: t(translations.common.contactUs), href: '/contact' }}
         showScrollIndicator={true}
         backgroundImage="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80"
       />
 
       {/* About Section (Brief) */}
-      <section className="py-24 bg-white">
+      <section className={`py-24 theme-bg-white ${isDark ? 'bg-white' : 'bg-navy-light'}`}>
         <Container>
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -31,30 +36,18 @@ export default function Home() {
               transition={{ duration: 0.6 }}
             >
               <span className="text-gold uppercase tracking-[0.3em] text-sm mb-4 block">
-                About Us
+                {t(translations.home.aboutUs)}
               </span>
-              <h2 className="font-serif text-3xl md:text-4xl font-medium text-navy mb-6">
-                Independent Advisory for Discerning Clients
+              <h2 className={`font-serif text-3xl md:text-4xl font-medium mb-6 ${isDark ? 'text-navy' : 'text-white'}`}>
+                {t(translations.home.aboutTitle)}
               </h2>
-              <div className="space-y-4 text-gray-600 leading-relaxed">
-                <p>
-                  Udacha Capital is a boutique investment bank providing independent
-                  advisory services to companies, shareholders, and investors across
-                  a range of industries and transaction types.
-                </p>
-                <p>
-                  Founded by experienced professionals from leading global investment
-                  banks, we combine institutional-quality capabilities with the
-                  personalized attention of a focused advisory firm.
-                </p>
-                <p>
-                  Our clients trust us with their most important financial decisions
-                  because we deliver thoughtful advice, rigorous analysis, and
-                  exceptional execution.
-                </p>
+              <div className={`space-y-4 leading-relaxed ${isDark ? 'text-gray-600' : 'text-gray-300'}`}>
+                <p>{t(translations.home.aboutText1)}</p>
+                <p>{t(translations.home.aboutText2)}</p>
+                <p>{t(translations.home.aboutText3)}</p>
               </div>
               <Button to="/about" variant="outline" className="mt-8">
-                Learn More About Us
+                {t(translations.common.learnMore)}
               </Button>
             </motion.div>
 
@@ -68,9 +61,9 @@ export default function Home() {
             >
               {company.stats.map((stat, index) => (
                 <StatCard
-                  key={stat.label}
+                  key={stat.label.en}
                   value={stat.value}
-                  label={stat.label}
+                  label={t(stat.label)}
                   index={index}
                 />
               ))}
@@ -80,12 +73,13 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="py-24 bg-cream">
+      <section className={`py-24 theme-bg-cream ${isDark ? 'bg-cream' : 'bg-navy-dark'}`}>
         <Container>
           <SectionTitle
-            title="Our Services"
-            subtitle="Comprehensive advisory solutions tailored to your strategic objectives"
+            title={t(translations.home.servicesTitle)}
+            subtitle={t(translations.home.servicesSubtitle)}
             className="mb-16"
+            light={!isDark}
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -97,12 +91,12 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-24 bg-navy">
+      <section className={`py-24 ${isDark ? 'bg-navy' : 'bg-cream'}`}>
         <Container>
           <SectionTitle
-            title="Why Udacha Capital"
-            subtitle="What distinguishes our approach"
-            light
+            title={t(translations.home.whyUsTitle)}
+            subtitle={t(translations.home.whyUsSubtitle)}
+            light={isDark}
             className="mb-16"
           />
 
@@ -113,21 +107,21 @@ export default function Home() {
 
               return (
                 <motion.div
-                  key={item.title}
+                  key={item.title.en}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="text-center"
                 >
-                  <div className="w-16 h-16 mx-auto mb-6 bg-white/10 flex items-center justify-center">
+                  <div className={`w-16 h-16 mx-auto mb-6 flex items-center justify-center ${isDark ? 'bg-white/10' : 'bg-navy/10'}`}>
                     <Icon className="w-8 h-8 text-gold" />
                   </div>
-                  <h3 className="font-serif text-xl font-medium text-white mb-3">
-                    {item.title}
+                  <h3 className={`font-serif text-xl font-medium mb-3 ${isDark ? 'text-white' : 'text-navy'}`}>
+                    {t(item.title)}
                   </h3>
-                  <p className="text-gray-400 leading-relaxed">
-                    {item.description}
+                  <p className={`leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {t(item.description)}
                   </p>
                 </motion.div>
               );
@@ -137,18 +131,19 @@ export default function Home() {
       </section>
 
       {/* Featured Transaction */}
-      <section className="py-24 bg-white">
+      <section className={`py-24 theme-bg-white ${isDark ? 'bg-white' : 'bg-navy-light'}`}>
         <Container>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <SectionTitle
-                title="Proven Results"
-                subtitle="Selected transactions demonstrating our expertise across sectors and deal types"
+                title={t(translations.home.provenResults)}
+                subtitle={t(translations.home.provenResultsSubtitle)}
                 align="left"
                 className="mb-8"
+                light={!isDark}
               />
               <Button to="/track-record" variant="outline">
-                View Track Record
+                {t(translations.home.viewTrackRecord)}
                 <ArrowRight size={16} className="ml-2" />
               </Button>
             </div>
@@ -159,7 +154,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-cream">
+      <section className={`py-24 theme-bg-cream ${isDark ? 'bg-cream' : 'bg-navy-dark'}`}>
         <Container>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -168,15 +163,14 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h2 className="font-serif text-3xl md:text-4xl font-medium text-navy mb-6">
-              Ready to Start a Conversation?
+            <h2 className={`font-serif text-3xl md:text-4xl font-medium mb-6 ${isDark ? 'text-navy' : 'text-white'}`}>
+              {t(translations.home.ctaTitle)}
             </h2>
-            <p className="text-gray-600 text-lg mb-8">
-              We welcome confidential inquiries from companies, shareholders,
-              and investors seeking independent advisory services.
+            <p className={`text-lg mb-8 ${isDark ? 'text-gray-600' : 'text-gray-300'}`}>
+              {t(translations.home.ctaText)}
             </p>
             <Button to="/contact" size="lg">
-              Contact Us
+              {t(translations.common.contactUs)}
             </Button>
           </motion.div>
         </Container>
